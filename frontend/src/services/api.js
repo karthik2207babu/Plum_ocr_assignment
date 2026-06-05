@@ -1,4 +1,4 @@
-const API_URL = "https://plum-backend-vqmz.onrender.com";
+const API_URL = "https://plum-backend-vqmz.onrender.com/api";
 
 const getHeaders = (isFormData = false) => {
   const token = localStorage.getItem('token');
