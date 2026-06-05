@@ -8,14 +8,14 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ['user', 'admin'], default: 'user' }
 }, { timestamps: true });
 
-// Modern async pre-save hook (No 'next' callback required)
+// Pre-save
 userSchema.pre('save', async function () {
-  // If the password hasn't been changed, just return and continue saving
+  // Skip
   if (!this.isModified('password')) {
     return;
   }
   
-  // Hash the password
+  // Hash
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

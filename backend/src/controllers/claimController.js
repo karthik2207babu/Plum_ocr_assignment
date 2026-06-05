@@ -5,23 +5,23 @@ const { evaluateClaim } = require('../services/adjudication/ruleEngine');
 
 const submitClaim = async (req, res) => {
   try {
-    // 1. Verify file exists
+    // Verify file
     if (!req.file) {
       return res.status(400).json({ message: 'Please upload a document' });
     }
 
     const filePath = req.file.path;
 
-    // 2. OCR Extraction
+    // OCR
     const rawOCRText = await processDocument(filePath);
 
-    // 3. AI Data Structuring
+    // AI
     const extractedData = await extractStructuredData(rawOCRText);
 
-    // 4. Rule Engine Evaluation
+    // Evaluate
     const adjudicationResult = evaluateClaim(extractedData);
 
-    // 5. Save to Database
+    // Save
     const newClaim = await Claim.create({
       userId: req.user._id, // Attached by auth middleware
       uploadedFiles: [filePath],
@@ -34,7 +34,7 @@ const submitClaim = async (req, res) => {
       status: 'processed'
     });
 
-    // 6. Return standard Plum JSON format
+    // Return
     res.status(201).json({
       claim_id: newClaim._id,
       decision: newClaim.decision,
@@ -50,7 +50,7 @@ const submitClaim = async (req, res) => {
 };
 const getUserClaims = async (req, res) => {
   try {
-    // Fetches claims for the logged-in user, sorted by newest first
+    // Fetch user
     const claims = await Claim.find({ userId: req.user._id }).sort({ createdAt: -1 });
     res.json(claims);
   } catch (error) {

@@ -1,18 +1,18 @@
 const multer = require('multer');
 const path = require('path');
 
-// Configure local storage
+// Storage
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, 'uploads/'); // Files will be saved in the backend/uploads directory
+    cb(null, 'uploads/'); // Save
   },
   filename(req, file, cb) {
-    // Format: claim-[timestamp]-[original-extension]
+    // Format
     cb(null, `claim-${Date.now()}${path.extname(file.originalname)}`);
   }
 });
 
-// Define acceptable file types (Images and PDFs)
+// Allowed types
 const fileFilter = (req, file, cb) => {
   const filetypes = /jpe?g|png|pdf/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -25,11 +25,11 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Initialize Multer
+// Setup
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit per file
+  limits: { fileSize: 5 * 1024 * 1024 } // Limit
 });
 
 module.exports = upload;

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = "https://plum-backend-vqmz.onrender.com";
 
 const getHeaders = (isFormData = false) => {
   const token = localStorage.getItem('token');
@@ -8,7 +8,7 @@ const getHeaders = (isFormData = false) => {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  // Only set application/json if we are NOT sending a file (FormData)
+  // Skip FormData
   if (!isFormData) {
     headers['Content-Type'] = 'application/json';
   }
@@ -25,7 +25,7 @@ const handleResponse = async (response) => {
 };
 
 export const api = {
-  // --- Auth Endpoints ---
+  // Auth
   login: async (credentials) => {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
@@ -44,11 +44,11 @@ export const api = {
     return handleResponse(response);
   },
 
-  // --- Claim Endpoints ---
+  // Claims
   submitClaim: async (formData) => {
     const response = await fetch(`${API_URL}/claims/submit`, {
       method: 'POST',
-      headers: getHeaders(true), // true = omit Content-Type for FormData
+      headers: getHeaders(true), // Omit
       body: formData,
     });
     return handleResponse(response);
@@ -62,7 +62,7 @@ export const api = {
     return handleResponse(response);
   },
 
-  // --- Admin Endpoints ---
+  // Admin
   getAllClaims: async () => {
     const response = await fetch(`${API_URL}/claims`, {
       method: 'GET',

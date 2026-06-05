@@ -12,7 +12,7 @@ const UserDashboard = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadFeedback, setUploadFeedback] = useState(null); // { type: 'success' | 'error', message: '' }
 
-  // Fetch claims on component mount
+  // Fetch claims
   useEffect(() => {
     fetchClaims();
   }, []);
@@ -47,7 +47,7 @@ const UserDashboard = () => {
     setUploadFeedback(null);
 
     const formData = new FormData();
-    // The key 'document' MUST match the upload.single('document') in our Node backend
+    // Upload key
     formData.append('document', selectedFile);
 
     try {
@@ -57,10 +57,10 @@ const UserDashboard = () => {
         message: `Claim processed! Decision: ${result.decision}` 
       });
       setSelectedFile(null);
-      // Reset the file input visually
+      // Reset
       document.getElementById('file-upload').value = '';
       
-      // Refresh the history list
+      // Refresh
       fetchClaims();
     } catch (error) {
       setUploadFeedback({ type: 'error', message: error.message || 'Failed to upload claim.' });
@@ -69,7 +69,7 @@ const UserDashboard = () => {
     }
   };
 
-  // Helper to color-code decisions
+  // Colors
   const getDecisionColor = (decision) => {
     switch (decision) {
       case 'APPROVED': return 'var(--success)';
@@ -91,7 +91,7 @@ const UserDashboard = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem' }}>
         
-        {/* Left Column: Upload Form */}
+        {/* Upload */}
         <div className="card" style={{ height: 'fit-content' }}>
           <h3 style={{ marginBottom: '1rem' }}>Submit New Claim</h3>
           
@@ -106,6 +106,7 @@ const UserDashboard = () => {
                 disabled={isUploading}
               />
               <small style={{ color: 'var(--text-muted)', display: 'block', marginTop: '0.5rem' }}>
+                {/* Formats */}
                 Supported formats: JPG, PNG, PDF (Max 5MB)
               </small>
             </div>
@@ -133,7 +134,7 @@ const UserDashboard = () => {
           </form>
         </div>
 
-        {/* Right Column: Claim History */}
+        {/* History */}
         <div className="card">
           <h3 style={{ marginBottom: '1rem' }}>My Claim History</h3>
           

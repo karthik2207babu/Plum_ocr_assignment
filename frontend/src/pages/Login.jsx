@@ -19,8 +19,7 @@ const Login = () => {
     const result = await login(email, password);
 
     if (result.success) {
-      // The context automatically updates the user state.
-      // Redirect based on user role
+      // Redirect
       const storedUser = JSON.parse(localStorage.getItem('user'));
       if (storedUser?.role === 'admin') {
         navigate('/admin-dashboard');

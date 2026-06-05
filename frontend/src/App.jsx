@@ -2,13 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
-// Import the actual pages we built
+// Pages
 import Login from './pages/Login';
 import Register from './pages/Register';
 import UserDashboard from './pages/UserDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 
-// Simple Route Protection Wrapper
+// Protection
 const ProtectedRoute = ({ children, requireAdmin }) => {
   const { user } = React.useContext(AuthContext);
 
@@ -32,7 +32,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           
-          {/* Protected User Routes */}
+          {/* User routes */}
           <Route 
             path="/dashboard" 
             element={
@@ -42,7 +42,7 @@ function App() {
             } 
           />
           
-          {/* Protected Admin Routes */}
+          {/* Admin routes */}
           <Route 
             path="/admin-dashboard" 
             element={
